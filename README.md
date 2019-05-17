@@ -17,3 +17,11 @@ PI18A-T.Prochorenko\
 
 Other important information: **Papildoma informacija**: 
 Čia bus žaidimo informacija.
+
+Žaidimo pavadinimas - FlyingZero
+Zero - superherojus, kuris gaudo blogiečius, juos reikia sunaikinti.
+& - pavaldiniai, kurie saugo bosą.
+X - bosas
+
+Pagavus bosą galima gauti iš jo šarvus arba deimantus. Taip pat pagreitėja žaidimas. Žaidimo tikslas, gauti kuo daugiau taškų.
+Žaidimas baigiasi sunaikinus tam tikrą bosų kiekį.
