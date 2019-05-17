@@ -11,7 +11,7 @@ Document Structure Tree: **Katalogų struktūra:**
 PI18A-T.Prochorenko\
       |\
     
-  +-- <b>LotteryAlgorithm</b> (<i>Šiame kataloge rasite antrosios užduoties realizaciją.</i>)\
+  +-- <b>FlyingZero</b> (<i>Šiame kataloge rasite antrosios užduoties realizaciją.</i>)\
   |\
   +-- README.MD
 
