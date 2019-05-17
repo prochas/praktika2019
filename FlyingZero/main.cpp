@@ -4,6 +4,7 @@
 #include <thread>
 #include <windows.h>
 
+
 using namespace std;
 
 const int MAX_ENEMIES=4;
@@ -21,7 +22,12 @@ struct enemy
 const int MAX_X=50;
 const int MAX_Y=20;
 const int COLLISION_PAUSE=3000;
+const int START_LIFE=5;
+const int START_EURAI=0;
 
+int life=START_LIFE;
+int eurai=START_EURAI;
+int difficulty;
 int greitis = 400;
 int x=2;
 int y=2;
@@ -45,11 +51,19 @@ void checkCollisionEnemies();
 void clearScreen(); // Isvalo ekrana;
 void randomizeEnemyPosition(); // Atsitiktinai sugeneruoja priesininko pozicija
 void generateEnemies();
-
+void difficultyMenu();
+void showDifficulty();
+void positionXY(int x, int y);
+void startScreen();
+void showStatusBar();
+void showGameOver();
+void setStartData();
 
 int main()
 {
 
+    startScreen();
+    difficultyMenu();
     generateEnemies();
     dy=1;
     dx=1;
@@ -67,16 +81,122 @@ int main()
         moveHero();
         checkCollision();
         checkCollisionEnemies();
+        showStatusBar();
 
     }
 
     return 0;
 }
 
+void difficultyMenu()
+{
+    char c;
+    difficulty=0;
+    positionXY(40, 10);
+    cout << "Pasirinkite norima sunkuma: " << endl;
+    positionXY(45, 12);
+    cout << "1. EASY" << endl;
+    positionXY(45, 14);
+    cout << "2. MEDIUM" << endl;
+    positionXY(45, 16);
+    cout << "3. HARD" << endl;
+
+    while (difficulty==0)
+    {
+        c = getch();
+        if (c=='1')
+        {
+            difficulty=1;
+        }
+        else if (c=='2')
+        {
+            difficulty=2;
+        }
+        else if (c=='3')
+        {
+            difficulty=3;
+        }
+    }
+    showDifficulty();
+
+}
+
+void setStartData()
+{
+    // Nustato pradines zaidimo gyvybes ir taskus
+    life=START_LIFE;
+    eurai=START_EURAI;
+}
+
+void showGameOver()
+{
+    clearScreen();
+
+    positionXY(40, 10);
+    cout << "GAME OVER";
+    positionXY(40, 12);
+    cout << " Eurai: ";
+    cout << eurai;
+
+    getch();
+
+    clearScreen();
+
+    setStartData();
+
+}
+
+void showStatusBar()
+{
+    positionXY(10, 30);
+    cout << "Life: ";
+    cout << life;
+
+    cout << " Eurai: ";
+    cout << eurai;
+
+
+}
+
+void startScreen()
+{
+    positionXY(45, 10);
+    cout << "SVEIKI ATVYKE";
+
+    positionXY(41, 12);
+    cout << " F L Y I N G   Z E R O " << endl;
+    getch();
+    clearScreen();
+}
+
+void showDifficulty()
+{
+    cout << "Pasirinktas lygis: ";
+    switch(difficulty)
+    {
+        case 1:
+            cout << "EASY";
+            break;
+        case 2:
+            cout << "MEDIUM";
+            break;
+        case 3:
+            cout << "HARD";
+            break;
+    }
+    clearScreen();
+}
 
 void _sleep(int timeMs)
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(timeMs));
+}
+
+void positionXY(int x, int y)
+{
+    COORD pos = {x, y};
+    HANDLE output = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleCursorPosition(output,pos);
 }
 
 void outputXY(int x, int y, char c)
@@ -258,19 +378,25 @@ void generateEnemies()
 void checkCollisionEnemies()
 {
     int a, b;
-    for (int i=0; i<MAX_ENEMIES; i++){
-
-    a=enemies[i].x;
-    b=enemies[i].y;
-
-    if ((abs(herojusX-a) < paklaidaX) && (abs(herojusY-b) < paklaidaY))
+    for (int i=0; i<MAX_ENEMIES; i++)
     {
-        cout << " BOOM " << endl;
-        _sleep(COLLISION_PAUSE);
-        clearScreen();
-        randomizeEnemyPosition();
+
+        a=enemies[i].x;
+        b=enemies[i].y;
+
+        if ((abs(herojusX-a) < paklaidaX) && (abs(herojusY-b) < paklaidaY))
+        {
+            cout << " BOOM " << endl;
+            life--;
+            if(life==0){
+                showGameOver();
+            }
+
+            _sleep(COLLISION_PAUSE);
+            clearScreen();
+            randomizeEnemyPosition();
+        }
     }
-}
 
 
 

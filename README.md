@@ -24,4 +24,4 @@ Zero - superherojus, kuris gaudo blogiečius, juos reikia sunaikinti.
 X - bosas
 
 Pagavus bosą galima gauti iš jo šarvus arba deimantus. Taip pat pagreitėja žaidimas. Žaidimo tikslas, gauti kuo daugiau taškų.
-Žaidimas baigiasi sunaikinus tam tikrą bosų kiekį.
+Žaidimas baigiasi sunaikinus tam tikrą bosų kiekį. Herojus žūsta jei jį 3kartus užpuola &.
