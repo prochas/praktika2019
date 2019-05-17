@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1558107943 source:c:\users\tomun\onedrive\desktop\zaidimai\judejimassumasyvais\main.cpp
+	<iostream>
+	<conio.h>
+	<chrono>
+	<thread>
+	<windows.h>
+
