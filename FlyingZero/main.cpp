@@ -7,7 +7,8 @@
 
 using namespace std;
 
-const int MAX_ENEMIES=4;
+const int MAX_ENEMIES=10000;
+const int MAX_LEVEL_ENEMIES=4;
 
 struct enemy
 {
@@ -25,6 +26,7 @@ const int COLLISION_PAUSE=3000;
 const int START_LIFE=5;
 const int START_EURAI=0;
 
+int level=1;
 int life=START_LIFE;
 int eurai=START_EURAI;
 int difficulty;
@@ -58,6 +60,7 @@ void startScreen();
 void showStatusBar();
 void showGameOver();
 void setStartData();
+void showLevel();
 
 int main()
 {
@@ -69,7 +72,7 @@ int main()
     dx=1;
     while (true)
     {
-        for (int i=0; i<MAX_ENEMIES; i++)
+        for (int i=0; i<MAX_LEVEL_ENEMIES+level; i++)
         {
             outputXY(enemies[i].x, enemies[i].y, '&');
 
@@ -126,6 +129,20 @@ void setStartData()
     // Nustato pradines zaidimo gyvybes ir taskus
     life=START_LIFE;
     eurai=START_EURAI;
+    level=1;
+}
+
+void showLevel()
+{
+    clearScreen();
+
+    positionXY(40, 10);
+    cout << "LEVEL " << level;
+    _sleep(COLLISION_PAUSE);
+    getch();
+
+    clearScreen();
+
 }
 
 void showGameOver()
@@ -238,7 +255,7 @@ void moveEnemy()
 }
 void moveEnemies()
 {
-    for (int i=0; i<MAX_ENEMIES; i++)
+    for (int i=0; i<MAX_LEVEL_ENEMIES+level; i++)
     {
         int x=enemies[i].x;
         int y=enemies[i].y;
@@ -339,8 +356,9 @@ void checkCollision()
 
     if ((abs(herojusX-x) < paklaidaX) && (abs(herojusY-y) < paklaidaY))
     {
-        cout << " BOOM " << endl;
-        _sleep(COLLISION_PAUSE);
+        level++;
+        showLevel();
+
         clearScreen();
         randomizeEnemyPosition();
     }
@@ -378,7 +396,7 @@ void generateEnemies()
 void checkCollisionEnemies()
 {
     int a, b;
-    for (int i=0; i<MAX_ENEMIES; i++)
+    for (int i=0; i<MAX_LEVEL_ENEMIES+level; i++)
     {
 
         a=enemies[i].x;
