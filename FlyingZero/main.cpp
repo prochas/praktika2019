@@ -25,6 +25,9 @@ const int MAX_Y=20;
 const int COLLISION_PAUSE=3000;
 const int START_LIFE=5;
 const int START_EURAI=0;
+//Inventorius
+int deimantai=0;
+int sarvai=0;
 
 int inv;
 int level=1;
@@ -63,19 +66,16 @@ void showGameOver();
 void setStartData();
 void showLevel();
 void showInventor();
-void showDropItems();
+void getAndShowItem();
+void startGame();
 
 
 
 int main()
 {
+    //showInventor();
+    startGame();
 
-    startScreen();
-    difficultyMenu();
-    generateEnemies();
-    showInventor();
-    dy=1;
-    dx=1;
     while (true)
     {
         for (int i=0; i<MAX_LEVEL_ENEMIES+level; i++)
@@ -95,6 +95,17 @@ int main()
     }
 
     return 0;
+}
+
+void startGame()
+{
+    startScreen();
+    setStartData();
+    difficultyMenu();
+    generateEnemies();
+    showInventor();
+    dy=1;
+    dx=1;
 }
 
 void difficultyMenu()
@@ -131,12 +142,29 @@ void difficultyMenu()
 }
 
 
-void showDropItems()
+void getAndShowItem()
 {
     clearScreen();
 
     positionXY(20, 10);
-    cout << "Sveikinu, jums iskrito Deimantas";
+
+    cout << "Sveikinu, jus pasiemete ";
+
+    int i;
+    i=rand() % 10;
+
+    if (i<5)
+    {
+        deimantai++;
+        cout << "deimanta";
+    }
+    else
+    {
+        sarvai=1;
+        cout << "sarvus";
+    }
+
+
 
     _sleep(COLLISION_PAUSE);
     getch();
@@ -149,10 +177,21 @@ void showDropItems()
 
 void showInventor()
 {
+    clearScreen();
 
-    positionXY(80, 30);
+    positionXY(40, 10);
     cout << "Inventorius";
 
+    positionXY(40, 12);
+    cout << "Jus turite: " <<  deimantai << " deimantu";
+
+    positionXY(52, 14);
+    cout << sarvai << " sarvu";
+
+    _sleep(COLLISION_PAUSE);
+    getch();
+
+    clearScreen();
 
 }
 
@@ -162,6 +201,8 @@ void setStartData()
     life=START_LIFE;
     eurai=START_EURAI;
     level=1;
+    deimantai=0;
+    sarvai=0;
 }
 
 void showLevel()
@@ -187,6 +228,7 @@ void showGameOver()
     cout << " Eurai: ";
     cout << eurai;
 
+    _sleep(COLLISION_PAUSE);
     getch();
 
     clearScreen();
@@ -380,6 +422,9 @@ void changeHeroDirection(char key)
         herojusDx=-1;
         herojusDy=0;
         break;
+    case 'i':
+        showInventor();
+        break;
     }
 }
 
@@ -388,11 +433,11 @@ void checkCollision()
 
     if ((abs(herojusX-x) < paklaidaX) && (abs(herojusY-y) < paklaidaY))
     {
+        getAndShowItem();
         level++;
         eurai=eurai+5;
 
         showInventor();
-        showDropItems();
         showLevel();
 
         clearScreen();
@@ -408,6 +453,7 @@ void clearScreen()
     // Clear the screen
     system("cls");
 }
+
 
 
 void randomizeEnemyPosition()
@@ -445,6 +491,8 @@ void checkCollisionEnemies()
             if(life==0)
             {
                 showGameOver();
+
+                startGame();
             }
 
             _sleep(COLLISION_PAUSE);
