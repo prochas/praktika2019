@@ -23,5 +23,6 @@ Zero - superherojus, kuris gaudo blogiečius, juos reikia sunaikinti.
 & - pavaldiniai, kurie saugo bosą.
 X - bosas
 
-Pagavus bosą galima gauti iš jo šarvus arba deimantus. Taip pat pagreitėja žaidimas. Žaidimo tikslas, gauti kuo daugiau taškų.
-Žaidimas baigiasi sunaikinus tam tikrą bosų kiekį. Herojus žūsta jei jį 3kartus užpuola &.
+Žaidimo tikslas prasibraunant pro pavaldinius, pasiekti bosą iš kurio iškrenta pinigai bei šarvai.
+Žaidime yra 3lygiai. Kuo didesnis lygis, tuo sunkiau pagauti bosą, nes atsiranda vis daugiau pavaldinių, kurie tą neleidžia padaryti.
+Taip pat, pagaudami bosą jus užsidirbate taškų, kuriuos galite palyginti su draugais.
