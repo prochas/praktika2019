@@ -6,10 +6,12 @@
 	<thread>
 	<windows.h>
 
-1558441061 source:c:\users\tomun\onedrive\desktop\zaidimai\praktika2019\flyingzero\main.cpp
+1558450667 source:c:\users\tomun\onedrive\desktop\zaidimai\praktika2019\flyingzero\main.cpp
 	<iostream>
 	<conio.h>
 	<chrono>
 	<thread>
 	<windows.h>
+	<fstream>
+	<bits/stdc++.h>
 

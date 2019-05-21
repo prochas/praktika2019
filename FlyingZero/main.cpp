@@ -3,12 +3,28 @@
 #include <chrono>
 #include <thread>
 #include <windows.h>
+#include <fstream>
+#include <bits/stdc++.h>
 
 
 using namespace std;
 
 const int MAX_ENEMIES=10000;
 const int MAX_LEVEL_ENEMIES=4;
+
+const int MAX_X=50;
+const int MAX_Y=20;
+const int MAX_PLAYERS=10000;
+const int COLLISION_PAUSE=3000;
+const int START_LIFE=5;
+const int START_EURAI=0;
+
+struct zaidejas
+{
+    string vardas;
+    int eurai;
+
+} zaidejai[MAX_PLAYERS];
 
 struct enemy
 {
@@ -20,15 +36,13 @@ struct enemy
 
 } enemies[MAX_ENEMIES];
 
-const int MAX_X=50;
-const int MAX_Y=20;
-const int COLLISION_PAUSE=3000;
-const int START_LIFE=5;
-const int START_EURAI=0;
+
 //Inventorius
 int deimantai=0;
 int sarvai=0;
 
+int maxZaidejai=0;
+string vardas;
 int inv;
 int level=1;
 int life=START_LIFE;
@@ -68,13 +82,20 @@ void showLevel();
 void showInventor();
 void getAndShowItem();
 void startGame();
+void saveScore();
+void enterName();
+void loadScores();
+void showTop10Scores();
 
 
 
 int main()
 {
+    enterName();
+    //saveScore();
     //showInventor();
     startGame();
+
 
     while (true)
     {
@@ -97,10 +118,93 @@ int main()
     return 0;
 }
 
+void enterName()
+{
+    clearScreen();
+
+    positionXY(20, 10);
+    cout << "Iveskite savo varda: ";
+    cin >> vardas;
+
+    clearScreen();
+
+}
+
+void saveScore()
+{
+    ofstream scores;
+    scores.open("scores.txt", ios::app);
+
+    scores << vardas << " ";
+    scores << eurai << endl;
+
+    scores.close();
+}
+
+bool compare(zaidejas a, zaidejas b)
+{
+    //https://www.includehelp.com/cpp-programs/sorting-a-structure-in-cpp.aspx
+    if(a.eurai < b.eurai)
+        return 0;
+    else
+        return 1;
+}
+
+
+void showTop10Scores()
+{
+    clearScreen();
+
+    sort(zaidejai,zaidejai+maxZaidejai, compare);
+
+    positionXY(40, 10);
+    cout << "TOP 10 SCORES ";
+
+    for (int i=0; i<10; i++)
+    {
+        positionXY(38, 12+i);
+        if (zaidejai[i].vardas.length()>0)
+        {
+            cout << zaidejai[i].vardas << " "<< zaidejai[i].eurai << endl;
+        }
+
+    }
+    _sleep(COLLISION_PAUSE);
+    getch();
+
+    clearScreen();
+}
+
+void loadScores()
+{
+    string temp_vardas;
+    int temp_eurai;
+    ifstream scores ("scores.txt");
+    if (scores.is_open())
+    {
+        maxZaidejai=0;
+        while (scores >> temp_vardas >> temp_eurai)
+        {
+            //cout << temp_vardas << " " << temp_eurai << endl;
+            zaidejai[maxZaidejai].eurai = temp_eurai;
+            zaidejai[maxZaidejai].vardas = temp_vardas;
+
+            maxZaidejai++;
+        }
+        scores.close();
+    }
+
+    else
+        cout << "Unable to open file";
+}
+
+
 void startGame()
 {
     startScreen();
     setStartData();
+    loadScores();
+    showTop10Scores();
     difficultyMenu();
     generateEnemies();
     showInventor();
@@ -160,7 +264,7 @@ void getAndShowItem()
     }
     else
     {
-        sarvai=1;
+        sarvai++;
         cout << "sarvus";
     }
 
@@ -228,6 +332,7 @@ void showGameOver()
     cout << " Eurai: ";
     cout << eurai;
 
+    saveScore();
     _sleep(COLLISION_PAUSE);
     getch();
 
@@ -424,6 +529,9 @@ void changeHeroDirection(char key)
         break;
     case 'i':
         showInventor();
+        break;
+    case 't':
+        showTop10Scores();
         break;
     }
 }
