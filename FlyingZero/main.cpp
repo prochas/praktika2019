@@ -26,6 +26,7 @@ const int COLLISION_PAUSE=3000;
 const int START_LIFE=5;
 const int START_EURAI=0;
 
+int inv;
 int level=1;
 int life=START_LIFE;
 int eurai=START_EURAI;
@@ -61,6 +62,9 @@ void showStatusBar();
 void showGameOver();
 void setStartData();
 void showLevel();
+void showInventor();
+void showDropItems();
+
 
 
 int main()
@@ -69,6 +73,7 @@ int main()
     startScreen();
     difficultyMenu();
     generateEnemies();
+    showInventor();
     dy=1;
     dx=1;
     while (true)
@@ -122,6 +127,32 @@ void difficultyMenu()
         }
     }
     showDifficulty();
+
+}
+
+
+void showDropItems()
+{
+    clearScreen();
+
+    positionXY(20, 10);
+    cout << "Sveikinu, jums iskrito Deimantas";
+
+    _sleep(COLLISION_PAUSE);
+    getch();
+
+    clearScreen();
+
+
+
+}
+
+void showInventor()
+{
+
+    positionXY(80, 30);
+    cout << "Inventorius";
+
 
 }
 
@@ -192,15 +223,15 @@ void showDifficulty()
     cout << "Pasirinktas lygis: ";
     switch(difficulty)
     {
-        case 1:
-            cout << "EASY";
-            break;
-        case 2:
-            cout << "MEDIUM";
-            break;
-        case 3:
-            cout << "HARD";
-            break;
+    case 1:
+        cout << "EASY";
+        break;
+    case 2:
+        cout << "MEDIUM";
+        break;
+    case 3:
+        cout << "HARD";
+        break;
     }
     clearScreen();
 }
@@ -358,6 +389,10 @@ void checkCollision()
     if ((abs(herojusX-x) < paklaidaX) && (abs(herojusY-y) < paklaidaY))
     {
         level++;
+        eurai=eurai+5;
+
+        showInventor();
+        showDropItems();
         showLevel();
 
         clearScreen();
@@ -407,7 +442,8 @@ void checkCollisionEnemies()
         {
             cout << " BOOM " << endl;
             life--;
-            if(life==0){
+            if(life==0)
+            {
                 showGameOver();
             }
 
