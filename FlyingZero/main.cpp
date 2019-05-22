@@ -26,6 +26,7 @@ struct zaidejas
 
 } zaidejai[MAX_PLAYERS];
 
+
 struct enemy
 {
     int x;
@@ -86,16 +87,15 @@ void saveScore();
 void enterName();
 void loadScores();
 void showTop10Scores();
+void showOtherSkin();
+void HTML();
 
 
 
 int main()
 {
     enterName();
-    //saveScore();
-    //showInventor();
     startGame();
-
 
     while (true)
     {
@@ -109,12 +109,11 @@ int main()
         moveEnemy();
         moveEnemies();
         moveHero();
+        //showOtherSkin();
         checkCollision();
         checkCollisionEnemies();
         showStatusBar();
-
     }
-
     return 0;
 }
 
@@ -130,16 +129,6 @@ void enterName()
 
 }
 
-void saveScore()
-{
-    ofstream scores;
-    scores.open("scores.txt", ios::app);
-
-    scores << vardas << " ";
-    scores << eurai << endl;
-
-    scores.close();
-}
 
 bool compare(zaidejas a, zaidejas b)
 {
@@ -173,6 +162,62 @@ void showTop10Scores()
     getch();
 
     clearScreen();
+}
+
+void HTML()
+{
+    std::string line;
+
+    std::string s1, s2, s3, s4;
+    int count = 0;
+
+    std::string sorted[100][4];
+
+    std::ofstream File("output.html");
+
+
+    std::ifstream Out("scores.txt");
+
+    if (File.is_open() && Out.is_open())
+    {
+
+
+        File << "<!DOCTYPE html> \n <html> \n <head> \n <link rel = \"stylesheet\" type = \"text/css\" href = \"output.css\"> \n</head>\n";
+        File << "<body> \n <h1 align=\"center\" style=\"color:black\">SCOREBOARD</h2> \n <table style=\"width:1000px\" align=\"center\"> \n <tr>\n";
+        File << "<tr> \n <th>Player name</th> \n <th>EURAI</th> \n <th>PLAYER NAME</th> \n <th>Enemies killed</th> \n </tr>\n";
+
+
+        while (Out >> s1 >> s2 >> s3 >> s4)
+        {
+
+
+            File << "<tr>\n";
+            File << "<td> "<< s1 << "</td>\n";
+            File << "<td>" << s2 << "</td>\n";
+            File << "<td>" << s3 << "</td>\n";
+            File << "<td>" << s4 << "</td>\n";
+            File << "</tr>\n";
+
+        }
+
+        File << "</table> \n </h1> \n </body> \n </html> \n ";
+
+        File.close();
+    }
+    else
+        std::cout << "Unable to open file";
+
+}
+
+void saveScore()
+{
+    ofstream scores;
+    scores.open("scores.txt", ios::app);
+
+    scores << vardas << " ";
+    scores << eurai << endl;
+
+    scores.close();
 }
 
 void loadScores()
@@ -243,6 +288,39 @@ void difficultyMenu()
     }
     showDifficulty();
 
+}
+
+void showOtherSkin()
+{
+    if (kbhit())
+    {
+        // Change to direction determined by key pressed
+        changeHeroDirection(getch());
+    }
+    outputXY(herojusX, herojusY, ' ' );
+    herojusX=herojusX+herojusDx;
+    if (herojusX>MAX_X)
+    {
+        herojusX=MAX_X;
+    }
+
+    if (herojusX<0)
+    {
+        herojusX=0;
+    }
+    herojusY=herojusY+herojusDy;
+
+    if (herojusY>MAX_Y)
+    {
+        herojusY=MAX_Y;
+    }
+
+    if (herojusY<0)
+    {
+        herojusY=0;
+
+    }
+    outputXY(herojusX, herojusY, 'W');
 }
 
 
@@ -333,6 +411,7 @@ void showGameOver()
     cout << eurai;
 
     saveScore();
+    HTML();
     _sleep(COLLISION_PAUSE);
     getch();
 
@@ -544,6 +623,7 @@ void checkCollision()
         getAndShowItem();
         level++;
         eurai=eurai+5;
+        showOtherSkin();
 
         showInventor();
         showLevel();
@@ -599,7 +679,6 @@ void checkCollisionEnemies()
             if(life==0)
             {
                 showGameOver();
-
                 startGame();
             }
 
@@ -608,7 +687,6 @@ void checkCollisionEnemies()
             randomizeEnemyPosition();
         }
     }
-
 
 
 }
