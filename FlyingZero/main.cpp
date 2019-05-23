@@ -11,7 +11,6 @@ using namespace std;
 
 const int MAX_ENEMIES=10000;
 const int MAX_LEVEL_ENEMIES=4;
-
 const int MAX_X=50;
 const int MAX_Y=20;
 const int MAX_PLAYERS=10000;
@@ -41,6 +40,7 @@ struct enemy
 //Inventorius
 int deimantai=0;
 int sarvai=0;
+int selling;
 
 int maxZaidejai=0;
 string vardas;
@@ -89,7 +89,9 @@ void loadScores();
 void showTop10Scores();
 void showOtherSkin();
 void HTML();
-
+void itemSelling();
+void pasiekimuLentele();
+void anotherStartData();
 
 
 int main()
@@ -180,8 +182,6 @@ void HTML()
 
     if (File.is_open() && Out.is_open())
     {
-
-
         File << "<!DOCTYPE html> \n <html> \n <head> \n <link rel = \"stylesheet\" type = \"text/css\" href = \"output.css\"> \n</head>\n";
         File << "<body> \n <h1 align=\"center\" style=\"color:black\">SCOREBOARD</h2> \n <table style=\"width:1000px\" align=\"center\"> \n <tr>\n";
         File << "<tr> \n <th>Player name</th> \n <th>EURAI</th> \n <th>PLAYER NAME</th> \n <th>Enemies killed</th> \n </tr>\n";
@@ -206,7 +206,6 @@ void HTML()
     }
     else
         std::cout << "Unable to open file";
-
 }
 
 void saveScore()
@@ -255,6 +254,27 @@ void startGame()
     showInventor();
     dy=1;
     dx=1;
+}
+
+
+void pasiekimuLentele()
+{
+    clearScreen();
+
+    positionXY(60, 10);
+    cout << "PASIEKIMU LENTELE" << endl;
+
+    cout << "1 LEVEL. Gaunate papildomus 2 sarvus " << endl;
+    cout << "2 LEVEL. Gaunate papildomus  2 pinigus " << endl;
+    cout << "3 LEVEL. Gaunate papildomus 2 deimantus " << endl;
+    cout << "4 LEVEL. Gaunate papildomus 4 sarvus " << endl;
+    cout << "5 LEVEL. Gaunate papildomus 4 pinigus " << endl;
+    cout << "6 LEVEL. Gaunate papildomus 4deimantus " << endl;
+
+    _sleep(COLLISION_PAUSE);
+    getch();
+    clearScreen();
+
 }
 
 void difficultyMenu()
@@ -377,6 +397,44 @@ void showInventor()
 
 }
 
+
+void itemSelling()
+{
+    clearScreen();
+
+    positionXY(20, 10);
+    cout << "Ar norite parduoti turimus daiktus?";
+    cin >> selling;
+
+    if (selling==1)
+    {
+
+        positionXY(20, 12);
+        cout << "Sveikinu, daiktai sekmingai parduoti";
+
+        positionXY(20, 14);
+        cout << "Uz tai gaunate papildomus eurus";
+        eurai=eurai+2;
+
+        _sleep(COLLISION_PAUSE);
+        getch();
+        clearScreen();
+
+        deimantai=0;
+        sarvai=0;
+    }
+    else if (selling==0)
+    {
+        positionXY(20, 14);
+        cout << "Pardavimas atsauktas";
+        _sleep(COLLISION_PAUSE);
+        getch();
+
+        clearScreen();
+    }
+
+}
+
 void setStartData()
 {
     // Nustato pradines zaidimo gyvybes ir taskus
@@ -385,6 +443,37 @@ void setStartData()
     level=1;
     deimantai=0;
     sarvai=0;
+}
+
+void anotherStartData()
+{
+    if (level==1)
+    {
+        cout << "Sveikinu gavote papildomus sarvus" << endl;
+        sarvai=sarvai+2;
+    }
+    else if (level==2)
+    {
+        cout << "Sveikinu gavot eurus" << endl;
+        eurai=eurai+2;
+    }
+    else if (level==3)
+    {
+        deimantai=deimantai+2;
+    }
+    else if (level==4)
+    {
+        eurai=eurai+4;
+    }
+    else if (level==5)
+    {
+        deimantai=deimantai+4;
+    }
+    else if (level==6)
+    {
+        sarvai=sarvai+4;
+    }
+
 }
 
 void showLevel()
@@ -439,7 +528,11 @@ void startScreen()
     cout << "SVEIKI ATVYKE";
 
     positionXY(41, 12);
-    cout << " F L Y I N G   Z E R O " << endl;
+    cout << " F L Y I N G   Z E R O ";
+
+    //pasiekimuLentele();
+
+
     getch();
     clearScreen();
 }
@@ -612,6 +705,11 @@ void changeHeroDirection(char key)
     case 't':
         showTop10Scores();
         break;
+    case 'm':
+        itemSelling();
+        break;
+    case 'l':
+        pasiekimuLentele();
     }
 }
 
@@ -622,6 +720,7 @@ void checkCollision()
     {
         getAndShowItem();
         level++;
+        anotherStartData();
         eurai=eurai+5;
         showOtherSkin();
 
@@ -687,6 +786,5 @@ void checkCollisionEnemies()
             randomizeEnemyPosition();
         }
     }
-
 
 }

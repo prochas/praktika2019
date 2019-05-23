@@ -4,3 +4,6 @@ Rokas 0
 Petras 10
 Tomas 10
 Jonas 10
+Valentinas 10
+t 5
+Tomas 23
