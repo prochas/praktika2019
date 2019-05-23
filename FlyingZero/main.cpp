@@ -42,6 +42,7 @@ int deimantai=0;
 int sarvai=0;
 int selling;
 
+int town=1;
 int maxZaidejai=0;
 string vardas;
 int inv;
@@ -92,6 +93,7 @@ void HTML();
 void itemSelling();
 void pasiekimuLentele();
 void anotherStartData();
+void zemelapis();
 
 
 int main()
@@ -254,6 +256,25 @@ void startGame()
     showInventor();
     dy=1;
     dx=1;
+}
+
+void zemelapis()
+{
+    if(town==1)
+    {
+        ifstream fd("1.txt");
+        char eil;
+        while(!fd.eof())
+        {
+            fd.get(eil);
+            if(eil=='n')
+                cout<<endl;
+            else
+                cout<<eil;
+
+        }
+        fd.close();
+    }
 }
 
 
@@ -530,9 +551,6 @@ void startScreen()
     positionXY(41, 12);
     cout << " F L Y I N G   Z E R O ";
 
-    //pasiekimuLentele();
-
-
     getch();
     clearScreen();
 }
@@ -710,6 +728,8 @@ void changeHeroDirection(char key)
         break;
     case 'l':
         pasiekimuLentele();
+    case 'b':
+        zemelapis();
     }
 }
 
